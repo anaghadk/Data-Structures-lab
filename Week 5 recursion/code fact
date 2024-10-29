@@ -1,0 +1,25 @@
+#include<stdio.h>
+int fact(int);
+void main()
+{
+    int f1,n;
+    printf("Enter the number: ");
+    scanf("%d",&n);
+    if(n<0)
+    {
+        printf("Invalid");
+        return;
+    }
+    f1=fact(n);
+    printf("Factorial of %d is %d",n,f1);
+}
+int fact(int n)
+{
+    if(n==1||n==0)
+    {
+        return(1);
+    }
+    else {
+        return(n*fact(n-1));
+    }
+}
