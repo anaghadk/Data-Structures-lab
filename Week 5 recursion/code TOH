@@ -1,0 +1,25 @@
+#include<stdio.h>
+void toh(int n,char s,char t,char d);
+void main()
+{
+    int n;
+    char s,t,d;
+    printf("Enter the number: ");
+    scanf("%d",&n);
+    
+    toh(n,'A','B','C');
+}
+void toh(int n,char s,char t,char d)
+{
+    if(n==1)
+    {
+        printf("\nMove %d disc from %c to %c",n,s,d);
+        return;
+    }
+    else {
+        toh(n-1,s,d,t);
+        printf("\nMove %d disc from %c to %c",n,s,d);
+        toh(n-1,t,s,d);
+        return;
+    }
+}
