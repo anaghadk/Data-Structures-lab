@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void display();
+void delend();
+void insertend();
+void delpos();
+void delbeg();
+
+struct Node {
+    int data;
+    struct Node* link;
+};
+typedef struct Node node;
+
+node *new1,*start = NULL;
+int ch;
+
+void main() {
+    while (1) {
+        printf("Enter your Choice:\n 1:  Insert at the end\n 2:Delete at end\n 3: delete at beginning\n 4: Delete at a position\n 4: Display\n 5: Exit\n");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: insertend();
+                break;
+            case 2: delend();
+                break;
+            case 3: delbeg();
+                break;
+            case 4: delpos();
+                break;    
+            case 5: display();
+                break;
+            case 6: exit(0);
+                break;
+            default: printf("Invalid choice\n");
+                break;
+        }
+    }
+}
+
+void insertend() {
+    new1 = (node*)malloc(sizeof(node));
+    if (new1 == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+       
+        printf("Enter value: ");
+        scanf("%d", &new1->data);
+        
+
+        if (start == NULL) {
+            start = new1;
+            new1->link = NULL;
+            return;
+        }
+        node* temp=start;
+        while(temp!=NULL) {
+            temp=temp->link;
+        } 
+        new1->link=NULL;
+        temp->link=new1;
+}
+
+void delbeg() {
+    if(start==NULL) {
+        printf("Linked list is empty");
+    }
+    if(start!=NULL) {
+        node* temp=start;
+        start=start->link;
+        free(temp);
+    }
+}
+
+void delend() {
+
+    if (start == NULL) {
+        return;
+    }
+    if (start->link == NULL) {
+    free(start);
+    start = NULL;
+    } else {
+    struct Node* temp = start;
+    while (temp->link->link != NULL) {
+    temp = temp->link;
+    }
+    free(temp->link);
+    temp->link = NULL;
+
+    }
+}
+void delpos() {
+    int pos;
+    printf("Enter the position: ");
+    scanf("%d",&pos);
+    struct Node* temp = start, *prev = NULL;
+    while (temp != NULL && temp->data != pos) {
+    prev = temp;
+    temp = temp->link;
+    }
+    if (temp != NULL) {
+    if (prev != NULL) {
+    prev->link = temp->link;
+    } else {
+    start = temp->link;
+    }
+    free(temp);
+    }
+
+}
+    
+
+void display() {
+    if (start == NULL) {
+        printf("Linked list is empty\n");
+        return;
+    }
+
+    node* temp = start;
+    printf("Elements of the linked list are: ");
+    while (temp != NULL) {
+        printf("%d", temp->data);
+        temp = temp->link;
+        if (temp != NULL) {
+            printf(" -> ");
+        }
+    }
+    printf("\n");
+}
+
