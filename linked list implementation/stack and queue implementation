@@ -1,0 +1,139 @@
+1BM23CS032
+Anagha d k
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void display();
+void push();
+void pop();
+void insert();
+void delete();
+
+struct Node {
+    int data;
+    struct Node* link;
+};
+typedef struct Node node;
+
+node *new1, *start = NULL;
+int ch;
+
+void main() {
+    char c;
+    printf("Stack or Queue? (s/q): ");
+    scanf(" %c", &c);
+    if (c == 's' || c == 'S') {
+        while (1) {
+            printf("Enter your Choice:\n 1: Push\n 2: Pop\n 3: Display\n 4: Exit\n");
+            scanf("%d", &ch);
+            switch (ch) {
+                case 1: push(); 
+                    break;
+                case 2: pop(); 
+                    break;
+                case 3: display(); 
+                    break;
+                case 4: exit(0); 
+                    break;
+                default: printf("Invalid choice\n"); 
+                    break;
+            }
+        }
+    } else if (c == 'q' || c == 'Q') {
+        while (1) {
+            printf("Enter your Choice:\n 1: Insert\n 2: Delete\n 3: Display\n 4: Exit\n");
+            scanf("%d", &ch);
+            switch (ch) {
+                case 1: insert(); 
+                    break;
+                case 2: delete(); 
+                    break;
+                case 3: display(); 
+                    break;
+                case 4: exit(0); 
+                    break;
+                default: printf("Invalid choice\n"); 
+                    break;
+            }
+        }
+    } else {
+        printf("Invalid input. Please restart the program.\n");
+    }
+}
+
+void insert() {
+    new1 = (node*)malloc(sizeof(node));
+    if (new1 == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    printf("Enter value: ");
+    scanf("%d", &new1->data);
+
+    new1->link = NULL;
+    if (start == NULL) {
+        start = new1; 
+    } else {
+        node* temp = start;
+        while (temp->link != NULL) { 
+            temp = temp->link;
+        }
+        temp->link = new1;
+    }
+}
+
+void push() {
+    new1 = (node*)malloc(sizeof(node));
+    if (new1 == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    printf("Enter value: ");
+    scanf("%d", &new1->data);
+
+    new1->link = start;
+    start = new1;      
+}
+
+void display() {
+    if (start == NULL) {
+        printf("Linked list is empty\n");
+        return;
+    }
+
+    node* temp = start;
+    printf("Elements of the linked list are: ");
+    while (temp != NULL) {
+        printf("%d", temp->data);
+        temp = temp->link;
+        if (temp != NULL) {
+            printf(" -> ");
+        }
+    }
+    printf("\n");
+}
+
+void pop() {
+    if (start == NULL) {
+        printf("Stack is empty\n");
+        return;
+    }
+    node* temp = start;
+    printf("Popped value: %d\n", temp->data);
+    start = start->link; 
+    free(temp);          
+}
+
+void delete() {
+    if (start == NULL) {
+        printf("Queue is empty\n");
+        return;
+    }
+    node* temp = start;
+    printf("Deleted value: %d\n", temp->data);
+    start = start->link;
+    free(temp);          
+}
