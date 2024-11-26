@@ -1,0 +1,268 @@
+1BM23CS032
+ANAGHA D K
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void display();
+void insertbeg();
+void insertend();
+void insertpos();
+void delbeg();
+void delend();
+void delpos();
+
+struct Node {
+    int data;
+    struct Node* link;
+};
+typedef struct Node node;
+
+node *new1,*start = NULL, *temp;
+int ch;
+
+void main() {
+    while (1) {
+        printf("Enter your Choice:\n 1:  Insert at the end\n 2: Insert at the beginning\n 3: Insert at a particular position\n 4: Delete at the beginning\n 5:Delete at the end\n 6:Delete at the given position\n 7: Display\n 8: Exit\n");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: insertend();
+                break;
+            case 2: insertbeg();
+                break;
+            case 3: insertpos();
+                break;
+            case 4: delbeg();
+                break;
+            case 5: delend();
+                break;
+            case 6: delpos();
+                break;
+            case 7: display();
+                break;
+            case 8: exit(0);
+                break;
+            default: printf("Invalid choice\n");
+                break;
+        }
+    }
+}
+
+void insertend() {
+    new1 = (node*)malloc(sizeof(node));
+    if (new1 == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
+       
+        printf("Enter value: ");
+        scanf("%d", &new1->data);
+        
+
+        if (start == NULL) {
+            start = new1;
+            new1->link = start;
+            return;
+        }
+        temp=start;
+        while(temp->link!=start) {
+            temp=temp->link;
+        } 
+        temp->link=new1;
+        new1->link=start;
+}
+void insertbeg() {
+    new1 = (node*)malloc(sizeof(node));
+    printf("Enter value: ");
+    scanf("%d", &new1->data);
+    if (start == NULL) {
+            start = new1;
+            new1->link=start;
+            return;
+    }
+    temp=start;
+    while(temp->link!=start) {
+        temp=temp->link;
+    }
+    temp->link=new1;
+    new1->link=start;
+    start=new1;
+}
+
+void insertpos() {
+    int pos;
+    new1 = (node*)malloc(sizeof(node));
+    printf("Enter value: ");
+    scanf("%d", &new1->data);
+    printf("Enter position: ");
+    scanf("%d", &pos);
+    if(pos==1) {
+        new1->link=start;
+        temp=start;
+        while(temp->link!=start) {
+            temp=temp->link;
+        }
+        temp->link=new1;
+        start=new1;
+        return;
+    }
+    int i=1;
+    temp=start;
+    while(temp->link!=start && i<pos-1) {
+        temp=temp->link;
+        i++;
+    }
+    if(temp->link==start && i!=pos-1) {
+        printf("Enter position greater than the number of elements: ");
+        return;
+    }
+    if(temp->link==start) {
+        temp->link=new1;
+        new1->link=start;
+        return;
+    }
+    new1->link=temp->link;
+    temp->link=new1;
+}
+
+void display() {
+    if (start == NULL) {
+        printf("Linked list is empty\n");
+        return;
+    }
+
+    temp = start;
+    printf("Elements of the linked list are: ");
+    do {
+        printf("%d", temp->data);
+        temp = temp->link;
+        if (temp != start) {
+            printf(" -> ");
+        }
+    } while (temp->link!= start);
+    printf("\n");
+}
+
+void delbeg() {
+    if(start==NULL) {
+        printf("Linked list is empty");
+        return;
+    }
+    if(start->link==start) {
+        free(start);
+        start=NULL;
+        return;
+    }
+    temp=start;
+    while(temp->link!=start) {
+        temp=temp->link;
+    }
+    node *temp1=start;
+    temp->link=start->link;
+    start=start->link;
+    free(temp1);
+    }
+   
+
+void delend() {
+
+    if (start == NULL) {
+        printf("Linked list is empty");
+        return;
+    }
+    if (start->link == start) {
+    free(start);
+    start = NULL;
+    return;
+    } 
+    temp = start;
+    while (temp->link->link != start) {
+    temp = temp->link;
+    }
+    free(temp->link);
+    temp->link = start;
+
+    }
+
+/*void delpos() {
+    if (start == NULL) {
+        printf("Linked list is empty");
+        return;
+    }
+    int ele;
+    printf("Enter the element: ");
+    scanf("%d",&ele);
+    struct Node* temp = start, *prev = NULL;
+    if(start->data==ele && start->link==start) {
+        free(start);
+        start=NULL;
+        return;
+    }
+    if(start->data==ele){
+        temp=start;
+        while(temp->link!=start) {
+            temp=temp->link;
+        }
+        temp->link=start->link;
+        free(start);
+        start=temp->link;
+        return;
+    }
+    while (temp->data!=ele && temp->link!=start) {
+    prev = temp;
+    temp = temp->link;
+    }
+    if (temp->data== ele && temp->link!=start) {
+    prev->link = temp->link;
+    free(temp);
+    return;
+    } 
+}
+*/
+
+
+void delpos() {
+    if (start == NULL) {
+        printf("Linked list is empty\n");
+        return;
+    }
+
+    int ele;
+    printf("Enter the element to delete: ");
+    scanf("%d", &ele);
+
+    if (start->data == ele && start->link == start) {
+        free(start);
+        start = NULL;
+        return;
+    }
+
+    temp = start;
+    node* prev = NULL;
+    
+    
+    if (start->data == ele) {
+        while (temp->link != start) {
+            temp = temp->link;
+        }
+        node* temp1 = start;
+        temp->link = start->link; 
+        start = start->link;      
+        free(temp1);
+        return;
+    }
+
+   
+    while (temp->link != start && temp->data != ele) {
+        prev = temp;
+        temp = temp->link;
+    }
+
+    if (temp->data == ele) {
+        prev->link = temp->link; 
+        free(temp);
+    } else {
+        printf("Element not found in the list\n");
+    }
+}
