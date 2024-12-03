@@ -3,160 +3,113 @@ Anagha D K
 
 #include <stdio.h>
 #include <stdlib.h>
-
-struct Node {
-    char info;
-    struct Node *left, *right;
+struct Node{
+    struct Node *left;
+    int data;
+    struct Node *right;
 };
-typedef struct Node node;
-
+typedef struct Node node ;
+node *root=NULL,*new1,*curr,*ptr;
+int ch,c=0;
+char ch1;
 void create();
-void preorder(node* temp);
-void inorder(node* temp);
-void postorder(node* temp);
-void display();  
-
-node *new1, *root, *ptr, *curr;
-char ch;
-
-void main() {
-    while (1) {
-        printf("Enter your Choice:\n 1: Create\n 2: Preorder\n 3: Inorder\n 4: Postorder\n 5: Display Level by Level\n 6: Exit\n");
-        scanf("%d", &ch);  
-        getchar();  
-        switch (ch) {
-            case 1: create();
-                break;
-            case 2: preorder(root); 
-                break;
-            case 3: inorder(root);   
-                break;
-            case 4: postorder(root); 
-                break;
-            case 5: display();     
-                break;
-            case 6: exit(0);
-                break;
-            default: printf("Invalid choice\n");
-                break;
-        }
+void traverse_preorder(node *temp);
+void traverse_inorder(node *temp);
+void traverse_postorder(node *temp);
+void display(node *temp,int);
+int main(){
+      while(1){
+    printf("1. Construct a binary Search tree.\n2. To traverse the tree using all the methods i.e., in-order,preorder and post order\n3.Display\n4.Exit\n");
+    printf("Enter your choice:");
+    scanf("%d",&ch);
+    switch(ch){
+        case 1:
+          create();
+          break;
+        case 2:
+          printf("Preorder:\n");
+          traverse_preorder(root);
+          printf("\nInorder:\n");
+          traverse_inorder(root);
+          printf("\nPostorder:\n");
+          traverse_postorder(root);
+          printf("\n");
+          break;
+        case 3:
+          printf("Level: 0\n");
+          display(root, 0);
+          break;
+        case 4:
+           exit(0);
     }
+   }
+   return 0;
 }
-
-void create() {
-    new1 = (node*)malloc(sizeof(node));
-    printf("Enter root data: ");
-    getchar();  
-    scanf("%c", &new1->info);
-    new1->left = NULL;
-    new1->right = NULL;
-    root = new1; 
-
-    while (1) {
-        printf("Do you want to add another node? (Y/n): ");
-        getchar();  
-        scanf("%c", &ch);
-        if (ch == 'y' || ch == 'Y') {
-            new1 = (node*)malloc(sizeof(node));
-            printf("Enter node data: ");
-            getchar(); 
-            scanf("%c", &new1->info);
-            new1->left = NULL;
-            new1->right = NULL;
-
-            char item = new1->info;
-            curr = root;
-            ptr = NULL;
-
-           
-            while (curr != NULL) {
-                ptr = curr;
-                if (item > curr->info) {
-                    curr = curr->right;  
-                } else {
-                    curr = curr->left;  
-                }
+void create(){
+  new1=(node *)malloc(sizeof(node));
+  printf("Enter the element:");
+  scanf(" %c",&new1->data);
+  new1->left=NULL;
+  new1->right=NULL;
+  root=new1;
+  while(1){
+    printf("Do you want to add more elements(Y/N):");
+        scanf(" %c",&ch1);
+        if(ch1=='Y'|| ch1=='y'){
+            new1=(node *)malloc(sizeof(node));
+            printf("Enter the element:");
+            scanf(" %c",&new1->data);
+            int item;
+            item=new1->data;
+            new1->left=NULL;
+            new1->right=NULL;
+            curr=root;
+            while(curr!=NULL){
+                ptr=curr;
+                curr=(item>=curr->data)?curr->right:curr->left;
             }
-
-           
-            if (item < ptr->info) {
-                ptr->left = new1;  
-            } else {
-                ptr->right = new1; 
+            if(item<ptr->data){
+                ptr->left=new1;
             }
-        } else {
-            return;  
-        }
+            else{
+                ptr->right=new1;
+            }
+  }
+  else{
+    return;
+  }
+}
+}
+void traverse_preorder(node *temp){
+    if(temp!=NULL){
+        printf(" %c",temp->data);
+        traverse_preorder(temp->left);
+        traverse_preorder(temp->right);
     }
 }
-
-
-void preorder(node* temp) {
-    if (temp != NULL) {
-        printf("%c ", temp->info);  
-        preorder(temp->left);       
-        preorder(temp->right);      
+void traverse_inorder(node *temp){
+    if(temp!=NULL){
+        traverse_inorder(temp->left);
+        printf(" %c",temp->data);
+        traverse_inorder(temp->right);
     }
 }
-
-
-void inorder(node* temp) {
-    if (temp != NULL) {
-        inorder(temp->left);        
-        printf("%c ", temp->info);
-        inorder(temp->right);       
+void traverse_postorder(node *temp){
+    if(temp!=NULL){
+        traverse_postorder(temp->left);
+        traverse_postorder(temp->right);
+        printf(" %c",temp->data);
+       
     }
 }
-
-
-void postorder(node* temp) {
-    if (temp != NULL) {
-        postorder(temp->left);      
-        postorder(temp->right);    
-        printf("%c ", temp->info);  
-    }
-}
-
-
-void display() {
-    if (root == NULL) {
-        printf("The tree is empty.\n");
+    void display(node *temp, int level) {
+    if (temp == NULL) {
         return;
     }
 
    
-    node* queue[100];
-    int front = 0, rear = 0;
+    printf("Data: %c, Level: %d\n", temp->data, level);
 
-    
-    queue[rear++] = root;
-
-    printf("Level Order Traversal: ");
-    
-    
-    while (front < rear) {
-        
-        node* current = queue[front++];
-        
-        
-        printf("%c ", current->info);
-        
-       
-        if (current->left != NULL) {
-            queue[rear++] = current->left;
-        }
-        
- 
-        if (current->right != NULL) {
-            queue[rear++] = current->right;
-        }
-    }
-
-    printf("\n");
+    display(temp->left, level + 1);
+    display(temp->right, level + 1);
 }
-
-
-    
-
-
-
