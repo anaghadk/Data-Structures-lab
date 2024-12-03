@@ -1,0 +1,162 @@
+Anagha D K
+1BM23CS032
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    char info;
+    struct Node *left, *right;
+};
+typedef struct Node node;
+
+void create();
+void preorder(node* temp);
+void inorder(node* temp);
+void postorder(node* temp);
+void display();  
+
+node *new1, *root, *ptr, *curr;
+char ch;
+
+void main() {
+    while (1) {
+        printf("Enter your Choice:\n 1: Create\n 2: Preorder\n 3: Inorder\n 4: Postorder\n 5: Display Level by Level\n 6: Exit\n");
+        scanf("%d", &ch);  
+        getchar();  
+        switch (ch) {
+            case 1: create();
+                break;
+            case 2: preorder(root); 
+                break;
+            case 3: inorder(root);   
+                break;
+            case 4: postorder(root); 
+                break;
+            case 5: display();     
+                break;
+            case 6: exit(0);
+                break;
+            default: printf("Invalid choice\n");
+                break;
+        }
+    }
+}
+
+void create() {
+    new1 = (node*)malloc(sizeof(node));
+    printf("Enter root data: ");
+    getchar();  
+    scanf("%c", &new1->info);
+    new1->left = NULL;
+    new1->right = NULL;
+    root = new1; 
+
+    while (1) {
+        printf("Do you want to add another node? (Y/n): ");
+        getchar();  
+        scanf("%c", &ch);
+        if (ch == 'y' || ch == 'Y') {
+            new1 = (node*)malloc(sizeof(node));
+            printf("Enter node data: ");
+            getchar(); 
+            scanf("%c", &new1->info);
+            new1->left = NULL;
+            new1->right = NULL;
+
+            char item = new1->info;
+            curr = root;
+            ptr = NULL;
+
+           
+            while (curr != NULL) {
+                ptr = curr;
+                if (item > curr->info) {
+                    curr = curr->right;  
+                } else {
+                    curr = curr->left;  
+                }
+            }
+
+           
+            if (item < ptr->info) {
+                ptr->left = new1;  
+            } else {
+                ptr->right = new1; 
+            }
+        } else {
+            return;  
+        }
+    }
+}
+
+
+void preorder(node* temp) {
+    if (temp != NULL) {
+        printf("%c ", temp->info);  
+        preorder(temp->left);       
+        preorder(temp->right);      
+    }
+}
+
+
+void inorder(node* temp) {
+    if (temp != NULL) {
+        inorder(temp->left);        
+        printf("%c ", temp->info);
+        inorder(temp->right);       
+    }
+}
+
+
+void postorder(node* temp) {
+    if (temp != NULL) {
+        postorder(temp->left);      
+        postorder(temp->right);    
+        printf("%c ", temp->info);  
+    }
+}
+
+
+void display() {
+    if (root == NULL) {
+        printf("The tree is empty.\n");
+        return;
+    }
+
+   
+    node* queue[100];
+    int front = 0, rear = 0;
+
+    
+    queue[rear++] = root;
+
+    printf("Level Order Traversal: ");
+    
+    
+    while (front < rear) {
+        
+        node* current = queue[front++];
+        
+        
+        printf("%c ", current->info);
+        
+       
+        if (current->left != NULL) {
+            queue[rear++] = current->left;
+        }
+        
+ 
+        if (current->right != NULL) {
+            queue[rear++] = current->right;
+        }
+    }
+
+    printf("\n");
+}
+
+
+    
+
+
+
