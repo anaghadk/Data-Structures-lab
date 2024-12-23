@@ -1,6 +1,3 @@
-1BM23CS032
-Anagha D K
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,7 +16,7 @@ void concatenate()
     printf("Concatenating Lists\n");
     if(start == NULL && start2 == NULL)
     {
-        printf("Linked Lists are empty\n");
+        printf("Both Linked Lists are empty\n");
         return;
     }
     if(start == NULL)
@@ -34,7 +31,10 @@ void concatenate()
         return;
     }
     ptr = start;
-    for(ptr = start; ptr->link != NULL; ptr = ptr->link){}
+    while(ptr->link != NULL)
+    {
+        ptr = ptr->link;
+    }
     ptr->link = start2;
     start2 = NULL;
     display(start);
@@ -43,6 +43,11 @@ void concatenate()
 void reverse()
 {
     printf("Reversing the list\n");
+    if(start == NULL)
+    {
+        printf("Linked list is empty, cannot reverse\n");
+        return;
+    }
     node *a = start, *b = NULL, *c = NULL;
     while(a != NULL)
     {
@@ -63,6 +68,10 @@ void createA()
     while(c == 1)
     {
         new1 = (node *) malloc(sizeof(node));
+        if (new1 == NULL) {
+            printf("Memory allocation failed\n");
+            return;
+        }
         printf("Enter data: ");
         scanf("%d", &new1->data);
         if(start == NULL)
@@ -84,6 +93,11 @@ void createA()
 void sort()
 {
     printf("Sorting the list\n");
+    if(start == NULL)
+    {
+        printf("Linked list is empty, cannot sort\n");
+        return;
+    }
     int len = 0, itr = 0, swapped;
     for(ptr = start; ptr != NULL; ptr = ptr->link)
     {
@@ -114,7 +128,6 @@ void sort()
                     prev->link = ptr;
                     prev = ptr;
                 }
-                continue;
             }
             prev = traverse;
             traverse = traverse->link;
@@ -149,7 +162,11 @@ void main()
         switch(ch){
             case 1: sort(); break;
             case 2: reverse(); break;
-            case 3: printf("\n\nCreate List 2:\n");createA();concatenate(); break;
+            case 3: 
+                printf("\n\nCreate List 2:\n");
+                createA();
+                concatenate();
+                break;
             case 4: exit(0); break;
         }
     }
