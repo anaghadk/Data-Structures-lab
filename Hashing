@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 10
+
+typedef struct {
+    int key;
+    char name[50];
+} Employee;
+
+Employee hashTable[MAX];
+int m = MAX;
+
+void initHashTable() {
+    for (int i = 0; i < m; i++) {
+        hashTable[i].key = -1;
+    }
+}
+
+int hashFunction(int key) {
+    return key % m;
+}
+
+int linearProbing(int key) {
+    int index = hashFunction(key);
+    int start = index;
+
+    while (hashTable[index].key != -1 && hashTable[index].key != key) {
+        index = (index + 1) % m;
+        if (index == start) {
+            printf("Hash Table is full\n");
+            return -1;
+        }
+    }
+    return index;
+}
+
+void insertRecord(int key, char name[]) {
+    int index = linearProbing(key);
+    if (index != -1) {
+        hashTable[index].key = key;
+        strcpy(hashTable[index].name, name);
+        printf("Employee record inserted at index %d\n", index);
+    }
+}
+
+void displayHashTable() {
+    printf("\nHash Table:\n");
+    for (int i = 0; i < m; i++) {
+        if (hashTable[i].key != -1) {
+            printf("Index %d: Key = %d, Name = %s\n", i, hashTable[i].key, hashTable[i].name);
+        } else {
+            printf("Index %d: Empty\n", i);
+        }
+    }
+}
+
+int main() {
+    int choice, key;
+    char name[50];
+
+    initHashTable();
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Insert Employee Record\n");
+        printf("2. Display Hash Table\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter employee key (4-digit): ");
+                scanf("%d", &key);
+                printf("Enter employee name: ");
+                getchar();
+                fgets(name, sizeof(name), stdin);
+                name[strcspn(name, "\n")] = '\0';
+                insertRecord(key, name);
+                break;
+            case 2:
+                displayHashTable();
+                break;
+            case 3:
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
